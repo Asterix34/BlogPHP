@@ -1,14 +1,8 @@
 <?php 
 
-	/* connexion BDD avec PDO */
-	$host = "localhost";
-	$bd_name = "blogphp";
-	$bd_user = "blogphp";
-	$bd_pwd = "blogpwd";
-	$dsn = "mysql:host=".$host.";dbname=".$bd_name;
+require("includes/pdo.php");
 
-	$pdo = new PDO($dsn, $bd_user, $bd_pwd);
-
+print_r($_POST);
 
 
 	// on récupère le prenom et nom en GET
@@ -20,6 +14,16 @@
 	$titre = isset($_POST['titre']) ? $_POST['titre'] : "";
 	$contenu = isset($_POST['contenu']) ? $_POST['contenu'] : "";
 
+	if (isset($_POST['soumis'])) { 
+
+		$sql = "INSERT INTO article (titre, contenu) VALUES(".
+			$pdo->quote($titre).",".$pdo->quote($contenu).")";
+
+		$pdo->query($sql);
+
+	} 
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,8 +34,7 @@
 
 	<body>
 		<h1>Ma page web</h1>
-		<p> Bonjour <?php echo $prenom . " " . $nom; ?> !
-		</p>
+		<p> Bonjour <?php echo $prenom . " " . $nom; ?> !</p>
 
 		<h2>Ajouter un article</h2>
 
@@ -39,38 +42,10 @@
 			Formulaire de soumission d'article
 			<p>Titre <input type="text" name="titre" value="<?php echo $titre; ?>" /></p>
 			<p>Contenu <textarea name="contenu"><?php echo $contenu; ?></textarea></p>
-			<input type="submit" name="soumis" />
+			<input type="submit" name="soumis" value="Poster"/>
 		</form>
 
-		<?php if (isset($_POST['soumis'])) { ?> 
+<?php include("blocs/listeArticles.php"); ?>
 
-		<p>Vous avez saisi :<br/>
-		<b>Titre :</b> <?php echo $titre; ?> <br/>
-		<b>Contenu :</b> <?php echo nl2br($contenu); ?></p>
-		
-		<?php } else { ?>
-
-		<p>Vous n'avez rien saisi.</p>
-
-		<?php } ?>
-
-		<h2>Liste des articles</h2>
-
-		<?php
-			$query = $pdo->query("SELECT * FROM article");
-
-			// fetch() retourne les résultats un par un
-			while ( $article = $query->fetch() ) {
-				echo '<p>'.$article['titre'].'<br/>'.$article['contenu'].'</p>';
-			}
-
-			// fetchAll retourne tous les résultats d'un coup
-			$articles = $query->fetchAll();
-
-			foreach ($articles as $article) {
-				echo '<p>'.$article['titre'].'<br/>'.$article['contenu'].'</p>';
-			}
-
-		?>
 	</body>
 </html>
