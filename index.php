@@ -16,10 +16,16 @@ print_r($_POST);
 
 	if (isset($_POST['soumis'])) { 
 
-		$sql = "INSERT INTO article (titre, contenu) VALUES(".
-			$pdo->quote($titre).",".$pdo->quote($contenu).")";
+		$sql = "INSERT INTO article (titre, contenu) VALUES(:titre, :contenu)";
 
-		$pdo->query($sql);
+		$req = $pdo->prepare($sql);
+
+		$params = array('titre' => $titre,
+						'contenu' => $contenu);
+
+		$req->execute($params);
+
+		echo $req->queryString;
 
 	} 
 
