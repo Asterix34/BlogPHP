@@ -1,10 +1,10 @@
 <?php
 
-	/* connexion BDD avec PDO */
-	$host = "localhost";
-	$bd_name = "blogphp";
-	$bd_user = "blogphp";
-	$bd_pwd = "blogpwd";
-	$dsn = "mysql:host=".$host.";dbname=".$bd_name;
+/* connexion BDD avec PDO */
+$dbHost = "localhost";
+$dbName = "blogphp";
+$dbUser = "blogphp";
+$dbPwd = "blogpwd";
+$dsn = "mysql:host=".$dbHost.";dbname=".$dbName;
 
-	$pdo = new PDO($dsn, $bd_user, $bd_pwd);
+$pdo = new PDO($dsn, $dbUser, $dbPwd);

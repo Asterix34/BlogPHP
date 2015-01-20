@@ -33,12 +33,12 @@ require("includes/pdo.php");
 			break;
 			
 		case "deleteArticle":
-			// TODO deleteArticle
+			echo "TODO deleteArticle";
 			break;
 
 		case "readArticle":
 		case "article":
-			// TODO readArticle
+			echo "TODO readArticle";
 			break;
 
 
