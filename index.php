@@ -8,6 +8,9 @@ require("includes/pdo.php");
 
 	// page permet d'inclure la page demandée par l'utilisateur
 	$page = isset($_GET['page']) ? $_GET['page'] : "home";
+
+	// on récupère un éventuel message encodé dans la barre d'adresse
+	$msg = isset($_GET['msg']) ? urldecode($_GET['msg']) : "";
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,7 +23,14 @@ require("includes/pdo.php");
 		<h1>Ma page web</h1>
 		<p> Bonjour <?php echo $prenom . " " . $nom; ?> !</p>
 
-<?php /* bloc controleur frontal */
+<?php
+	// on cherche l'existence d'un message à afficher
+	if (isset($msg) && $msg != "") {
+		// et on l'affiche
+		echo '<p>'.$msg.'</p>';
+	}
+
+	/* bloc controleur frontal */
 
 	switch($page) {
 		case "newArticle":
@@ -33,12 +43,12 @@ require("includes/pdo.php");
 			break;
 			
 		case "deleteArticle":
-			echo "TODO deleteArticle";
+			include("blocs/deleteArticle.php");
 			break;
 
 		case "readArticle":
 		case "article":
-			echo "TODO readArticle";
+			include("blocs/readArticle.php");
 			break;
 
 

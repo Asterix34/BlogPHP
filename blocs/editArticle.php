@@ -1,10 +1,7 @@
 <?php
 
 	$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-/*
-print_r($_POST);
-echo "ID = ".$id;
-*/
+
 
 	// on cherche la soumission d'un article par un formulaire en POST
 	if (isset($_POST['soumis'])) {
@@ -17,15 +14,17 @@ echo "ID = ".$id;
 
 		$req = $pdo->prepare($sql);
 
+		// cet tableau stocke les paramètres pour la requete :
 		$params = array('titre' => $_POST['titre'],
 						'contenu' => $_POST['contenu']);
 
 		$req->execute($params);
 
-
+		// on effectue une redirection vers la page d'accueil à la fin du traitement
+		// on peut passer un message encodé pour confirmer
+		header("Location: index.php?msg=".urlencode("L'article a été édité avec succès."));
 	} 
-	// TODO: evitez d'aller chercher en base des données qu'on vient d'entrer
-	// si on a un id, on charge les valeurs depuis la base de données
+
 	if ( $id > 0 ) {
 		$sql = "SELECT * FROM article WHERE id=".$id;
 		// on recupère la requete PDO
