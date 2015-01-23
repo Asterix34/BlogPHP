@@ -1,16 +1,22 @@
 <?php 
 
 require("includes/pdo.php");
+require("model/Article.class.php");
+require("controller/ArticleController.php");
 
-	// on récupère le prenom et nom en GET
-	$prenom = isset($_GET['prenom']) ? $_GET['prenom'] : "";
-	$nom = isset($_GET['nom']) ? $_GET['nom'] : "";
 
 	// page permet d'inclure la page demandée par l'utilisateur
 	$page = isset($_GET['page']) ? $_GET['page'] : "home";
 
 	// on récupère un éventuel message encodé dans la barre d'adresse
 	$msg = isset($_GET['msg']) ? urldecode($_GET['msg']) : "";
+	
+
+	/* bloc controleur frontal */	
+	$articleRepo = new ArticleRepository( $pdo );
+	
+	$articleController = new ArticleController($articleRepo);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +27,6 @@ require("includes/pdo.php");
 
 	<body>
 		<h1>Ma page web</h1>
-		<p> Bonjour <?php echo $prenom . " " . $nom; ?> !</p>
 
 <?php
 	// on cherche l'existence d'un message à afficher
@@ -30,31 +35,26 @@ require("includes/pdo.php");
 		echo '<p>'.$msg.'</p>';
 	}
 
-	/* bloc controleur frontal */
 
 	switch($page) {
 		case "newArticle":
 		case "editArticle":
-			include("blocs/editArticle.php");
-			break;
-
-		case "listArticles":
-			include("blocs/listArticles.php");
+			$articleController->edit();
 			break;
 			
 		case "deleteArticle":
-			include("blocs/deleteArticle.php");
+			$articleController->delete();
 			break;
 
 		case "readArticle":
 		case "article":
-			include("blocs/readArticle.php");
+			$articleController->read();
 			break;
 
-
 		case "home":
+		case "listArticles":
 		default:
-			include("blocs/home.php");
+			$articleController->index();
 	}
 
 
