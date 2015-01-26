@@ -8,13 +8,19 @@ class ArticleController {
 		$this->_model = $model; 
 	}
 	
+	public function render($viewName, $params) {
+		$view = new View($viewName, $params);
+		$view->render();
+	}
+	
+	/* actions */
+	
 	public function index() {
 		
 		// fetchAll retourne tous les résultats d'un coup
 		$articles = $this->_model->getAll();
 
-		$view = new View("index", array("articles" => $articles));
-		$view->render();
+		$this->render("index", array("articles" => $articles));
 		
 	}
 	
@@ -24,8 +30,7 @@ class ArticleController {
 		if ($article = $this->_model->get($id)) {
 
 			//include("view/read.view.php");
-			$view = new View("read", array("id" => $id, "article" => $article));
-			$view->render();
+			$this->render("read", array("id" => $id, "article" => $article));
 		
 		} else {
 			header ( "Location: index.php?msg=" . urlencode ( "Aucun id d'article n'a été fourni." ) );
@@ -59,9 +64,8 @@ class ArticleController {
 		}
 
 		//include("view/edit.view.php");
-		$view = new View("edit", array("id" => $id,
-										"article" => $article));
-		$view->render();
+		$this->render("edit", array("id" => $id,
+									"article" => $article));
 	}
 
 	public function delete() {
@@ -93,7 +97,6 @@ class ArticleController {
 		}
 		
 		//include ("view/delete.view.php");
-		$view = new View("delete", array("id" => $id));
-		$view->render();
+		$this->render("delete", array("id" => $id));
 	}
 }
