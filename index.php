@@ -14,36 +14,13 @@ require("controller/ArticleController.php");
 	$entityName = isset($_GET['entity']) ? strtolower($_GET['entity']) : "article";
 	$actionName = isset($_GET['action']) ? strtolower($_GET['action']) : "index";
 	
-	// On créé le Repo et le Controller
+	// On forge les noms de Repo et de Controller
 	$repoName = ucfirst($entityName) . "Repository"; // ArticleRepository
 	$controllerName = ucfirst($entityName) . "Controller"; // ArticleController
 	
+	// on les instancie
 	$repo = new $repoName( $pdo );
-	
 	$controller = new $controllerName($repo);
-
-
+	
+	// on appelle la méthode demandée
 	$controller->$actionName();
-/*
-
-	switch($page) {
-		case "newArticle":
-		case "editArticle":
-			$controller->edit();
-			break;
-			
-		case "deleteArticle":
-			$controller->delete();
-			break;
-
-		case "readArticle":
-		case "article":
-			$controller->read();
-			break;
-
-		case "home":
-		case "listArticles":
-		default:
-			$controller->index();
-	}
-*/
