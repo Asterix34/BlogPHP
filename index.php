@@ -2,6 +2,7 @@
 
 require("includes/Pdo.php");
 require("includes/View.php");
+require("includes/Controller.php");
 require("model/Article.class.php");
 require("controller/ArticleController.php");
 
