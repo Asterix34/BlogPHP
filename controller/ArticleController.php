@@ -9,8 +9,36 @@ class ArticleController {
 	}
 	
 	public function render($viewName, $params) {
+		// on récupère un éventuel message encodé dans la barre d'adresse
+		$msg = isset($_GET['msg']) ? urldecode($_GET['msg']) : "";
+		
+		// render htlm header view
+		$view = new View("header", array("titre" => "Ma page web",
+										 "msg" => $msg) );
+		$view->render();
+		
+		// render content view
 		$view = new View($viewName, $params);
 		$view->render();
+		
+		// render html footer view
+		$view = new View("footer");
+		$view->render();
+	}
+	
+	public function redirect($url, $params) {
+		$first = true;
+		// ajoute les parametres à l'adresse
+		foreach ( $params as $key => $value ) {
+			if ($first) { // si premier alors ?
+				$url .= "?";
+				$first = false;
+			} else { // sinon &
+				$url .= "&";
+			}
+			$url .= $key . "=" . urlencode($value);
+		}
+		header ( "Location: ".$url );
 	}
 	
 	/* actions */
@@ -33,7 +61,8 @@ class ArticleController {
 			$this->render("read", array("id" => $id, "article" => $article));
 		
 		} else {
-			header ( "Location: index.php?msg=" . urlencode ( "Aucun id d'article n'a été fourni." ) );
+			//header ( "Location: index.php?msg=" . urlencode ( "Aucun id d'article n'a été fourni." ) );
+			$this->redirect("index.php", array( "msg" => "Aucun id d'article n'a été fourni."));
 		}
 	}
 	
@@ -53,7 +82,8 @@ class ArticleController {
 			$this->_model->persist($article);
 			
 			// we need a redirect here
-			header("Location: index.php?msg=".urlencode("L'article a été édité avec succès."));
+			//header("Location: index.php?msg=".urlencode("L'article a été édité avec succès."));
+			$this->redirect("index.php", array( "msg" => "L'article a été édité avec succès."));
 		}
 		
 		if ( $id > 0 ) {
@@ -75,7 +105,7 @@ class ArticleController {
 		// en cas d'annulation, on redirige sur l'index
 		if (isset($_POST['annuler'])) {
 			$msg = "Suppression annulée.";
-			header("Location: index.php?msg=".urlencode($msg));
+			$this->redirect("index.php", array("msg"=>$msg));
 		
 		}
 		// sinon on cherche un id d'article à supprimer
@@ -87,11 +117,11 @@ class ArticleController {
 				// on effectue une redirection vers la page d'accueil à la fin du traitement
 				// on peut passer un message encodé pour confirmer
 				$msg = "L'article a été supprimé avec succès.";
-				header("Location: index.php?msg=".urlencode($msg));
+				$this->redirect("index.php", array("msg"=>$msg));
 				
 			} else {
 				// sinon on redirige en indiquant qu'il faut fournir un id
-				Header("Location: index.php?msg=".urlencode("Aucun article n'a été trouvé avec cet id."));
+				$this->redirect("index.php", array("msg"=>"Aucun article n'a été trouvé avec cet id."));
 			}
 		
 		}
