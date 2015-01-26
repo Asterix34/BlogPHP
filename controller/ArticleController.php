@@ -64,6 +64,8 @@ class ArticleController extends Controller {
 		
 			if ($article==null)
 				$id = 0;
+		} else {
+			$article = new Article(); // on créé un article vide pour gérer le formulaire
 		}
 
 		//include("view/edit.view.php");
