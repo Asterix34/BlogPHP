@@ -1,6 +1,6 @@
 <h2>Ajouter un article</h2>
 		
-<form name="article" method="POST" action="index.php?page=editArticle<?php
+<form name="article" method="POST" action="index.php?entity=article&action=edit<?php
 	echo ($id>0) ? "&id=".$id : "";
 	 ?>">
 	Formulaire de soumission d'article

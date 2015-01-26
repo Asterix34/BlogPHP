@@ -8,39 +8,42 @@ require("controller/ArticleController.php");
 
 
 	// page permet d'inclure la page demandée par l'utilisateur
-	$page = isset($_GET['page']) ? $_GET['page'] : "home";
+	//$page = isset($_GET['page']) ? $_GET['page'] : "home";
 	
-
-	/* bloc controleur frontal */	
-	$articleRepo = new ArticleRepository( $pdo );
+	// page permet d'inclure la page demandée par l'utilisateur
+	$entityName = isset($_GET['entity']) ? strtolower($_GET['entity']) : "article";
+	$actionName = isset($_GET['action']) ? strtolower($_GET['action']) : "index";
 	
-	$articleController = new ArticleController($articleRepo);
+	// On créé le Repo et le Controller
+	$repoName = ucfirst($entityName) . "Repository"; // ArticleRepository
+	$controllerName = ucfirst($entityName) . "Controller"; // ArticleController
+	
+	$repo = new $repoName( $pdo );
+	
+	$controller = new $controllerName($repo);
 
 
-
+	$controller->$actionName();
+/*
 
 	switch($page) {
 		case "newArticle":
 		case "editArticle":
-			$articleController->edit();
+			$controller->edit();
 			break;
 			
 		case "deleteArticle":
-			$articleController->delete();
+			$controller->delete();
 			break;
 
 		case "readArticle":
 		case "article":
-			$articleController->read();
+			$controller->read();
 			break;
 
 		case "home":
 		case "listArticles":
 		default:
-			$articleController->index();
+			$controller->index();
 	}
-
-
-?>
-	</body>
-</html>
+*/
