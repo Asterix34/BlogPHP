@@ -1,13 +1,26 @@
 <?php
 
-class Controller {
+/**
+ * Controller est la classe de modèle pour les contrôleurs de l'application
+ */
+abstract class Controller {
 	
+	/**
+	 * $_model permet de stocker le Repository correspondant
+	 * @var Repository
+	 */
 	protected $_model;
 	
 	public function __construct(ArticleRepository $model) {
 		$this->_model = $model; 
 	}
 	
+	/**
+	 * Render permet d'afficher la page complète et son contenu
+	 * 
+	 * @param string $viewName
+	 * @param array $params
+	 */
 	protected function render($viewName, $params) {
 		// on récupère un éventuel message encodé dans la barre d'adresse
 		$msg = isset($_GET['msg']) ? urldecode($_GET['msg']) : "";
@@ -26,6 +39,12 @@ class Controller {
 		$view->render();
 	}
 	
+	/**
+	 * Redirect permet de faire une redirection sur une url
+	 * 
+	 * @param string $url
+	 * @param array $params
+	 */
 	protected function redirect($url, $params) {
 		$first = true;
 		// ajoute les parametres à l'adresse

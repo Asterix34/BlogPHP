@@ -1,18 +1,27 @@
 <?php
 
+/**
+ * ArticleController est le contrôleur de l'entité Article
+ * 
+ * @author humanbooster
+ */
 class ArticleController extends Controller {
 	
 
-	// actions publiques
+	/**
+	 * Index affiche la liste des articles et les liens d'administrations
+	 */
 	public function index() {
 		
 		// fetchAll retourne tous les résultats d'un coup
 		$articles = $this->_model->getAll();
 
 		$this->render("index", array("articles" => $articles));
-		
 	}
 	
+	/**
+	 * Read permet de lire un article en récupérant l'id dans la barre d'adresse en GET
+	 */
 	public function read() {
 		$id = isset ( $_GET ['id'] ) ? ( int ) $_GET ['id'] : 0;
 		
@@ -27,6 +36,9 @@ class ArticleController extends Controller {
 		}
 	}
 	
+	/**
+	 * Edit permet l'ajout et l'édition d'un article selon si un id est trouvé en GET
+	 */
 	public function edit() {
 		
 		$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -59,6 +71,9 @@ class ArticleController extends Controller {
 									"article" => $article));
 	}
 
+	/**
+	 * Delete permet de supprimer (avec formulaire de confirmation) un article dont l'ID est fourni en GET
+	 */
 	public function delete() {
 		
 		$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
